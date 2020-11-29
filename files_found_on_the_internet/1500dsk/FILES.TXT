@@ -1,0 +1,8 @@
+1500DSK1 PCX    ;interface schematic I/O and address decoder section
+1500MEM1 PCX    ;interface schematic memory section
+LAYOUT   TXT    ;board layout I used on an experimental PCB
+PORT     TXT    ;interface port assignments
+LEDS     PCX    ;simple circuit to test the I/O section
+LEDS     ASM    ;test program asm source
+LEDS     P      ;test program TS1500 executable
+FILES    TXT    ;this file

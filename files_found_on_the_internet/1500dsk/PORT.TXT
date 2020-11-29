@@ -1,0 +1,18 @@
+
+TS1500 / C1541  Disk drive interface
+Port assignment
+
++---+---+---+---+---+---+---+---+
+| 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |   Port 0BFH
++---+---+---+---+---+---+---+---+
+  |   |   |   |   |   |   |   |
+  |   |   |   |   |   |   |   +--> R/O Busy status line from EEPROM active low
+  |   |   |   |   |   |   +------> W/O High ram bank select
+  |   |   |   |   |   +----------> W/O Serial reset                 active high
+  |   |   |   |   +--------------> W/O Serial attention output      active high
+  |   |   |   +------------------> W/O Serial clock output          active high
+  |   |   +----------------------> W/O Serial data  output          active high
+  |   +--------------------------> R/O Serial clock input           active low
+  +------------------------------> R/O Serial data input            active low
+
+

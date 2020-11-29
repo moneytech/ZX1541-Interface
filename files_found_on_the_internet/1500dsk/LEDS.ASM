@@ -1,0 +1,92 @@
+;TEST THE OUT PORT OF THE ZX-1541 INTERFACE
+;LIGHT THE LEDS CONNECTED TO THE DRIVE CABLE SEQUENTIALLY
+
+;ZX81 machine code program template.
+;For use with AVOCET cross assembler.
+;The program will auto run at address 16514 4082H
+;Use SAVE1500 to transfer programs to a real ZX81
+
+        ORG     4009H
+
+;SAVED SYSTEM VARIABLES
+VERSN:  DEFB    00H
+E_PPC:  DEFW    0000H
+D_FILE: DEFW    DFILE1
+DF_CC:  DEFW    DFILE1+1
+VARS:   DEFW    VARS1
+DEST:   DEFW    0000H
+E_LINE: DEFW    VARS1+1
+CH_ADD: DEFW    VARS1+7
+X_PTR:  DEFW    0000H
+STKBOT: DEFW    VARS1+8
+STKEND: DEFW    VARS1+8
+BREG:   DEFB    00H
+MEM:    DEFW    MEMBOT
+UNUSEB: DEFB    00H
+DF_SZ:  DEFB    02H
+S_TOP:  DEFW    0000H
+LAST_K: DEFW    0FFFFH
+DB_ST:  DEFB    00H
+MARGIN: DEFB    55
+NXTLIN: DEFW    LINE1
+OLDPPC: DEFW    0000H
+FLAGX:  DEFB    00H
+STRLEN: DEFW    0000H
+T_ADDR: DEFW    0C6BH
+SEED:   DEFW    0000H
+FRAMES: DEFW    0FFFFH
+COORDS: DEFB    00H
+        DEFB    00H
+PR_CC:  DEFB    188
+S_POSN: DEFB    33
+S_PSN1: DEFB    24
+CDFLAG  DEFB    64
+PRBUFF: DEFS    20H
+PRBEND  DEFB    76H
+MEMBOT: DEFS    1EH
+UNUSEW: DEFW    0000H
+
+;BASIC PROGRAM
+LINE0:  DEFB    00H
+        DEFB    00H
+        DEFW    ENDL0-LINE0-3
+        DEFB    0EAH            ;REM
+
+START:  LD B,04H
+        LD D,00H
+LOOP:   LD E,B
+        DEC E
+        LD HL,TABLE
+        ADD HL,DE
+        LD A,(HL)
+        OUT (0BFH),A
+DELAY1: LD A,(FRAMES)
+        AND 0FH
+        JR Z,DELAY1
+DELAY2: LD A,(FRAMES)
+        AND 0FH
+        JR NZ,DELAY2
+        XOR A
+        IN A,(0FEH)
+        RRA
+        RET NC
+        DJNZ LOOP
+        JR START
+TABLE:  DEFB 38H,34H,2CH,1CH
+ENDL0:  DEFB    76H
+
+LINE1:  DEFB    00H
+        DEFB    01H
+        DEFW    ENDL1-LINE1-3
+        DEFB    0F9H,0D4H,0C5H, 0BH     ;RAND USR VAL "
+        DEFB     1DH, 22H, 21H, 1DH, 20H;16514
+        DEFB    0BH                     ;"
+ENDL1:  DEFB    76H
+
+;COLLAPSED DISPLAY FILE
+DFILE1: DEFB     76H, 76H, 76H, 76H, 76H, 76H, 76H, 76H
+        DEFB     76H, 76H, 76H, 76H, 76H, 76H, 76H, 76H
+        DEFB     76H, 76H, 76H, 76H, 76H, 76H, 76H, 76H
+        DEFB    76H
+VARS1:  DEFB    80H
+        END
